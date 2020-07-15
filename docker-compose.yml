@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+  
+  web:
+    build:
+      context: .
+      dockerfile: apache-php.dockerfile
+    
+    image: apache-php 
+    
+    container_name: lamp-apache-php
+    
+    environment:
+      - HOSTNAME=apache
+    
+    ports:
+      - ${WWW_PORT}:80
+    
+    volumes:
+      - ${WWW_FOLDER}:/var/www/html
+ 
+    networks:
+      - lamp
+
+
+  db:
+    image: mysql:5.7.27
+    container_name: lamp-mysql57
+    
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+    
+    ports:
+      - ${MYSQL_PORT}:3306
+    
+    volumes:
+      - ${MYSQL_DATA_FOLDER}:/var/lib/mysql
+      - ./conf/my.cnf:/etc/mysql/mysql.conf.d/custom.cnf
+
+    healthcheck:
+      test: ["CMD", "mysql", "-uroot", "-p${MYSQL_PASSWORD}", "-h127.0.0.1"]
+      interval: 10s
+      retries: 3
+      start_period: 40s 
+
+    networks:
+      - lamp
+
+
+networks: 
+  lamp:
+      
+
