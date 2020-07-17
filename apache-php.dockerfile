@@ -6,6 +6,7 @@ RUN apt-get update && apt-get install -y vim nano iputils-ping wget curl ssh zip
     docker-php-ext-install pdo_mysql && \
     docker-php-ext-install zip && \
     docker-php-ext-install opcache && \
+    docker-php-ext-install mysqli  && \
     a2enmod rewrite && \
     apt-get clean
 
